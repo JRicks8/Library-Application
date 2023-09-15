@@ -1,0 +1,8 @@
+	Book Class: the Book class contains attributes for every column of the csv file. Anything with text
+is stored as a string, any number with a decimal point is stored as a float, and any number without
+a decimal point is stored as an integer. 
+
+	BookList: the BookList class contains a list of objects of the Book class which is used to store
+the data pulled from the csv file. It also contains every function that is present in the BookArrayList
+and BookLinkedList classes, though many of them are abstract and only present to ensure both subclasses
+have all required functions. 

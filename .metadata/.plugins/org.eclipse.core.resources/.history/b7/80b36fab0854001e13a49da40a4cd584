@@ -138,19 +138,6 @@ public class BookArrayList extends BookList{
 			}
 		}
 	}
-	
-	//reverses the order of books in the list.
-	public void ReverseBookOrder() {
-		//use a temporary array identical to the books list to reverse the order.
-		Book[] tempArray = new Book[books.size()];
-		for(int i=0;i<books.size();i++) {
-			tempArray[i] = books.get(i);
-		}
-		for(int i=0;i<books.size();i++) {
-			books.set(i, tempArray[books.size()-i-1]);
-		}
-		
-	}
 
 
 	

@@ -131,25 +131,9 @@ public class BookArrayList extends BookList{
 				float bookAYear = books.get(a).original_publication_year;
 				float bookBYear = books.get(b).original_publication_year;
 				
-				//if book b has an earlier year than book a, swap their positions.
-				if(bookAYear > bookBYear) {
-					SwapPositions(a,b);
-				}
+				
 			}
 		}
-	}
-	
-	//reverses the order of books in the list.
-	public void ReverseBookOrder() {
-		//use a temporary array identical to the books list to reverse the order.
-		Book[] tempArray = new Book[books.size()];
-		for(int i=0;i<books.size();i++) {
-			tempArray[i] = books.get(i);
-		}
-		for(int i=0;i<books.size();i++) {
-			books.set(i, tempArray[books.size()-i-1]);
-		}
-		
 	}
 
 

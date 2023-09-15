@@ -58,7 +58,4 @@ public abstract class BookList{
 	
 	//sorts books by publication year, with earlier books coming first.
 	protected abstract void SortByPublicationYear();
-	
-	//reverses the order of books in the list.
-	protected abstract void ReverseBookOrder();
 }

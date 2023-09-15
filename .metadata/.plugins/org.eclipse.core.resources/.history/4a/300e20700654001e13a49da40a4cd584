@@ -123,33 +123,31 @@ public class BookArrayList extends BookList{
 		//go through each index of the list, and compare the publication year at that index with all other publication years.
 		//if an earlier suitable publication year is found for the position, swap the position of that book and the book currently at the index.
 		
-		//a represents the index currently being determined, b represents the index of the book being compared to.
+		//a represents the index currently being determined, b represents the index of the book being compared to, c represents the index of the characters being compared.
 		//loop through each index in the books list.
 		for(int a=0;a<books.size();a++) {
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<books.size();b++) {
-				float bookAYear = books.get(a).original_publication_year;
-				float bookBYear = books.get(b).original_publication_year;
+				String bookATitle = books.get(a).authors;
+				String bookBTitle = books.get(b).authors;
 				
-				//if book b has an earlier year than book a, swap their positions.
-				if(bookAYear > bookBYear) {
-					SwapPositions(a,b);
+				//for each book that is at a higher index, check if it comes before the current book in order.
+				for(int c=0;c<bookATitle.length() && c<bookBTitle.length();c++) {
+					//the book with the lowest valued character at the lowest index that does not contain the same
+					//character for both strings comes first.
+					
+					//if bookA[c] has a lower value than bookB[c], book A comes first the comparison can stop.
+					if(Character.getNumericValue(bookATitle.charAt(c)) < Character.getNumericValue(bookBTitle.charAt(c))) {
+						break;
+					}
+					//if bookA[c] has a higher value than bookB[c], book B comes first the comparison can stop.
+					else if(Character.getNumericValue(bookATitle.charAt(c)) > Character.getNumericValue(bookBTitle.charAt(c))) {
+						SwapPositions(a,b);
+						break;
+					}
 				}
 			}
 		}
-	}
-	
-	//reverses the order of books in the list.
-	public void ReverseBookOrder() {
-		//use a temporary array identical to the books list to reverse the order.
-		Book[] tempArray = new Book[books.size()];
-		for(int i=0;i<books.size();i++) {
-			tempArray[i] = books.get(i);
-		}
-		for(int i=0;i<books.size();i++) {
-			books.set(i, tempArray[books.size()-i-1]);
-		}
-		
 	}
 
 
