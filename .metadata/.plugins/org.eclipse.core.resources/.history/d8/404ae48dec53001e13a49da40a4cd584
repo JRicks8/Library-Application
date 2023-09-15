@@ -17,28 +17,26 @@ public abstract class BookList{
 		char currentChar = ' ';
 		//indicates whether commas should be ignored or not.
 		boolean quotationEnclosed = false;
-				
+		
 		for(int i=0;i<_string.length();i++) {
 			currentChar = _string.charAt(i);
 			
-			//if an un-enclosed comma is encountered, add the current string to the slitString list,
+			//if an unenclosed comma is encountered, add the current string to the slitString list,
 			//and reset the current string to be blank.
 			if(currentChar == ',' && quotationEnclosed == false) {
 				splitString.add(currentString);
 				currentString = "";
 			}
-			//if a quotation mark is encountered, toggle quotationEnclosed
-			else if(currentChar == '"'){
-				quotationEnclosed = !quotationEnclosed;
-			}
-			//if the char is not an un-enclosed comma or quotation mark, add it to the string.
+			//if the char is not an unenclosed comma, add it to the string.
 			else {
 				currentString += currentChar;
 			}
-			
+			//if a quotation mark is encountered, toggle quotationEnclosed
+			if(currentChar == '"'){
+				quotationEnclosed = !quotationEnclosed;
+			}
 		}
-		//add the last chunk then return.
-		splitString.add(currentString);
+		
 		return splitString;
 	}
 }

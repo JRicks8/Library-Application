@@ -31,7 +31,7 @@ public class Book {
 		best_book_id = 0;
 		work_id = 0;
 		books_count = 0;
-		isbn = "";
+		isbn = 0;
 		authors = "";
 		original_publication_year = 0;
 		original_title = "";

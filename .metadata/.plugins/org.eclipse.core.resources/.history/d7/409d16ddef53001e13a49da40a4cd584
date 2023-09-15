@@ -17,13 +17,16 @@ public abstract class BookList{
 		char currentChar = ' ';
 		//indicates whether commas should be ignored or not.
 		boolean quotationEnclosed = false;
-				
+		
+		System.out.println(_string);
+		
 		for(int i=0;i<_string.length();i++) {
 			currentChar = _string.charAt(i);
 			
 			//if an un-enclosed comma is encountered, add the current string to the slitString list,
 			//and reset the current string to be blank.
 			if(currentChar == ',' && quotationEnclosed == false) {
+				System.out.println(currentString);
 				splitString.add(currentString);
 				currentString = "";
 			}
@@ -38,7 +41,9 @@ public abstract class BookList{
 			
 		}
 		//add the last chunk then return.
+		System.out.println(currentString);
 		splitString.add(currentString);
+		System.out.println("endSplit");
 		return splitString;
 	}
 }
