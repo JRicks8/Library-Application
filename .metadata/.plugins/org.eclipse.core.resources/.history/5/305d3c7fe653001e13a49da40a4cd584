@@ -1,0 +1,36 @@
+package Backend;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.io.BufferedReader;  
+import java.io.FileReader;  
+import java.io.IOException;  
+
+
+public class BookLists {
+	
+	//abstract class used to make BookArrayList and BookLinkedList classes.
+	public abstract class BookList{
+		public List<Book> books;
+		
+		
+	}
+	
+	
+	
+	
+	
+	public static void main(String[] args) throws Exception  
+	{  
+		BookLists bookLists = new BookLists();
+		BookArrayList testList = bookLists.new BookArrayList();
+		//testList.AddBooksFromFile("C:\\books.csv");
+		String[] test = "egg,toast,,waffle".split(",");
+		for(String string : test) {
+			if(string == "") {
+				System.out.println("blank");
+			}
+			
+		}
+	}  
+}
