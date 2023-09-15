@@ -7,6 +7,7 @@ public class Book {
 	public int work_id;
 	public int books_count;
 	public String isbn;
+	public String isbn13;
 	public String authors;
 	public float original_publication_year;
 	public String original_title;

@@ -6,5 +6,7 @@ public class Testing {
 	{  
 		BookArrayList testList = new BookArrayList();
 		testList.AddBooksFromFile("C:\\books.csv");
+		testList.SortByPublicationYear();
+		testList.PrintBooks();
 	} 
 }

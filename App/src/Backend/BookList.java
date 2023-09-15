@@ -41,4 +41,21 @@ public abstract class BookList{
 		splitString.add(currentString);
 		return splitString;
 	}
+	
+	//below are abstract functions that cannot work correctly for both subclasses when inherited but both subclasses should contain them. 
+	
+	//print the values of a book.
+	protected abstract void PrintBook(int _index);
+	
+	//calls PrintBook for every book in the books list. 
+	protected abstract void PrintBooks();
+	
+	//swaps the position of two books in the list.
+	protected abstract void SwapPositions(int _indexA, int _indexB);
+	
+	//sorts books by author starting with special characters, then numbers, then a and ends with z. 
+	protected abstract void SortByAuthor();
+	
+	//sorts books by publication year, with earlier books coming first.
+	protected abstract void SortByPublicationYear();
 }
