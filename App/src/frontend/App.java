@@ -17,12 +17,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
+import Backend.BookLists;
+
 public class App {
 
 	private JFrame frmLibraryApp;
 	private JTextField searchField;
 	
-	private File bookData;
+	private File booksDataFile;
 
 	/**
 	 * Launch the application.
@@ -46,10 +48,7 @@ public class App {
 	public App() {
 		initialize();
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	
 	private void initialize() {
 		frmLibraryApp = new JFrame();
 		frmLibraryApp.getContentPane().setBackground(new Color(192, 192, 192));
@@ -70,8 +69,10 @@ public class App {
 		JButton btnImportData = new JButton("Load Data");
 		btnImportData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (bookData != null && bookData.exists()) {
+				if (booksDataFile != null && booksDataFile.exists()) {
 					System.out.println("Request Received.");
+					
+					//books.AddBooksFromFile(booksDataFile.getAbsolutePath());
 				} else {
 					// popup error window
 					Error.createWindow("ERR: Selected file is null or cannot be found. Please re-select the file.");

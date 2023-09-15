@@ -74,13 +74,4 @@ public class BookLists {
 			
 		}
 	}
-	
-	
-	
-	public static void main(String[] args) throws Exception  
-	{  
-		BookLists bookLists = new BookLists();
-		BookArrayList testList = bookLists.new BookArrayList();
-		testList.AddBooksFromFile("C:\\books.csv");
-	}  
 }
