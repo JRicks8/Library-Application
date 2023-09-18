@@ -1,0 +1,53 @@
+package Backend;
+
+public class Book {
+	public String book_id;
+	public String goodreads_book_id;
+	public String best_book_id;
+	public String work_id;
+	public String books_count;
+	public String isbn;
+	public String isbn13;
+	public String authors;
+	public String original_publication_year;
+	public String original_title;
+	public String title;
+	public String language_code;
+	public String average_rating;
+	public String ratings_count;
+	public String work_ratings_count;
+	public String work_text_reviews_count;
+	public String ratings_1;
+	public String ratings_2;
+	public String ratings_3;
+	public String ratings_4;
+	public String ratings_5;
+	public String image_url;
+	public String small_image_url;
+	
+	//constructor without parameters, all numbers are 0 and all strings are empty ("")
+	public Book() {
+		book_id = 0;
+		goodreads_book_id = 0;
+		best_book_id = 0;
+		work_id = 0;
+		books_count = 0;
+		isbn = "";
+		authors = "";
+		original_publication_year = 0;
+		original_title = "";
+		title = "";
+		language_code = "";
+		average_rating = 0;
+		ratings_count = 0;
+		work_ratings_count = 0;
+		work_text_reviews_count = 0;
+		ratings_1 = 0;
+		ratings_2 = 0;
+		ratings_3 = 0;
+		ratings_4 = 0;
+		ratings_5 = 0;
+		image_url = "";
+		small_image_url = "";
+	}
+}

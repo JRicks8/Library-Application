@@ -1,52 +1,54 @@
 package Backend;
 
 public class Book {
-	public int book_id;
-	public int goodreads_book_id;
-	public int best_book_id;
-	public int work_id;
-	public int books_count;
+	/*all variables are stored as strings because strings can hold empty values, so blank cells in
+	the csv files will not crash the program when the data is being put into Book classes.*/
+	public String book_id;
+	public String goodreads_book_id;
+	public String best_book_id;
+	public String work_id;
+	public String books_count;
 	public String isbn;
 	public String isbn13;
 	public String authors;
-	public float original_publication_year;
+	public String original_publication_year;
 	public String original_title;
 	public String title;
 	public String language_code;
-	public float average_rating;
-	public int ratings_count;
-	public int work_ratings_count;
-	public int work_text_reviews_count;
-	public int ratings_1;
-	public int ratings_2;
-	public int ratings_3;
-	public int ratings_4;
-	public int ratings_5;
+	public String average_rating;
+	public String ratings_count;
+	public String work_ratings_count;
+	public String work_text_reviews_count;
+	public String ratings_1;
+	public String ratings_2;
+	public String ratings_3;
+	public String ratings_4;
+	public String ratings_5;
 	public String image_url;
 	public String small_image_url;
 	
 	//constructor without parameters, all numbers are 0 and all strings are empty ("")
 	public Book() {
-		book_id = 0;
-		goodreads_book_id = 0;
-		best_book_id = 0;
-		work_id = 0;
-		books_count = 0;
+		book_id = "";
+		goodreads_book_id = "";
+		best_book_id = "";
+		work_id = "";
+		books_count = "";
 		isbn = "";
 		authors = "";
-		original_publication_year = 0;
+		original_publication_year = "";
 		original_title = "";
 		title = "";
 		language_code = "";
-		average_rating = 0;
-		ratings_count = 0;
-		work_ratings_count = 0;
-		work_text_reviews_count = 0;
-		ratings_1 = 0;
-		ratings_2 = 0;
-		ratings_3 = 0;
-		ratings_4 = 0;
-		ratings_5 = 0;
+		average_rating = "";
+		ratings_count = "";
+		work_ratings_count = "";
+		work_text_reviews_count = "";
+		ratings_1 = "";
+		ratings_2 = "";
+		ratings_3 = "";
+		ratings_4 = "";
+		ratings_5 = "";
 		image_url = "";
 		small_image_url = "";
 	}
