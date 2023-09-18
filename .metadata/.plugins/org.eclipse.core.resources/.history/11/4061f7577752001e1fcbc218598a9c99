@@ -1,0 +1,69 @@
+package Backend;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.io.BufferedReader;  
+import java.io.FileReader;  
+import java.io.IOException;  
+
+
+public class BookLists {
+	
+	//abstract class used to make BookArrayList and BookLinkedList classes.
+	public abstract class BookList{
+		public List<Book> books;
+		
+		
+	}
+	
+	public class BookArrayList extends BookList{
+		public ArrayList<Book> books = new ArrayList<Book>();
+		
+		//read from a csv file, and create a book for each line of the file.
+				public void AddBooksFromFile(String _filepath) {
+					
+					String line = "";  
+					String splitBy = ",";  
+					try   
+					{  
+					//parsing a CSV file into BufferedReader class constructor  
+					BufferedReader br = new BufferedReader(new FileReader(_filepath)); 
+					
+					//skip the first line: it should contain only the names of each column rather than usable data.
+					br.readLine();
+					
+					//used to keep track of the index of the Book class being filled out.
+					int i = 0;
+					
+						while ((line = br.readLine()) != null)   //returns a Boolean value  
+						{  
+						String[] splitLine = line.split(splitBy);    // use comma as separator
+						
+						books.add(new Book());
+						Book currentBook = books.get(i);
+						currentBook.book_id = Integer.parseInt(splitLine[0]);
+						
+						
+						i++;
+						}  
+					System.out.println(books.get(0));
+						
+					br.close();
+					}   
+					catch (IOException e)   
+					{  
+					e.printStackTrace();  
+					}  
+					
+				}
+	}
+	
+	
+	
+	public static void main(String[] args) throws Exception  
+	{  
+		BookLists bookLists = new BookLists();
+		BookArrayList testList = bookLists.new BookArrayList();
+		testList.AddBooksFromFile("C:\\books.csv");
+	}  
+}
