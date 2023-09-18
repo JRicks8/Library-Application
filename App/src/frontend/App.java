@@ -3,6 +3,7 @@ package frontend;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,6 +46,8 @@ import javax.swing.border.MatteBorder;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
+import net.miginfocom.swing.MigLayout;
+import java.awt.FlowLayout;
 
 
 public class App implements ListSelectionListener {
@@ -53,12 +56,13 @@ public class App implements ListSelectionListener {
 	
 	private File booksDataFile;
 	private BookArrayList booksData;
-	private JTextField searchField;
+	private JTextField bookIDSearchField;
 	private DefaultListModel<Book> listMod;
 	private JList<Book> searchResults;
 	private JTable bookInfoTable;
 	private JLabel lblBookTitle;
 	private JLabel lblBookImage;
+	private JTextField isbnSearchField;
 
 	/**
 	 * Launch the application.
@@ -88,6 +92,8 @@ public class App implements ListSelectionListener {
 		frmLibraryApp.getContentPane().setBackground(new Color(192, 192, 192));
 		
 		final JPanel header = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) header.getLayout();
+		flowLayout.setAlignment(FlowLayout.LEFT);
 		frmLibraryApp.getContentPane().add(header, BorderLayout.NORTH);
 		
 		// Import Data button
@@ -149,78 +155,13 @@ public class App implements ListSelectionListener {
 		JPanel sidebar = new JPanel();
 		frmLibraryApp.getContentPane().add(sidebar, BorderLayout.WEST);
 		
-		// search entry field
-		searchField = new JTextField();
-		searchField.setColumns(10);
-		
 		// scrollpane that contains the search results
 		JScrollPane scrollPane = new JScrollPane();
-		
-		// sorting filter combo box
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setToolTipText("Sort By...");
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
-		comboBox.setSelectedIndex(0);
+		scrollPane.setMaximumSize(new Dimension(400, 100000));
 		
 		// Ascending/Descending checkbox
 		JCheckBox chckbxAscending = new JCheckBox("Ascending");
 		chckbxAscending.setSelected(true);
-		GroupLayout gl_sidebar = new GroupLayout(sidebar);
-		gl_sidebar.setHorizontalGroup(
-			gl_sidebar.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_sidebar.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_sidebar.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-						.addGroup(gl_sidebar.createSequentialGroup()
-							.addComponent(searchField, 147, 147, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(chckbxAscending)
-					.addContainerGap())
-		);
-		gl_sidebar.setVerticalGroup(
-			gl_sidebar.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_sidebar.createSequentialGroup()
-					.addGap(7)
-					.addGroup(gl_sidebar.createParallelGroup(Alignment.BASELINE)
-						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(chckbxAscending))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
-					.addContainerGap())
-		);
-		
-		// upon changing combo box sorting options, re-sort the data
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (booksData == null) {
-					Error.createWindow(Error.ERR_NODATA);
-					return;
-				}
-				System.out.println("Sorting method: " + comboBox.getSelectedItem().toString());
-				System.out.println(comboBox.getSelectedItem().toString() == "Author");
-				// clear the list of results, then sort. then add the sorted list to the results.
-				listMod.clear();
-				switch (comboBox.getSelectedItem().toString()) {
-					case "Title": 
-						break;
-					case "Publication Year": 
-						booksData.SortByPublicationYear();
-						break;
-					case "Author": 
-						booksData.SortByAuthor();
-						break;
-					default: 
-						System.out.println("err");
-				}
-				// if descending order, then reverse the book order
-				if (!chckbxAscending.isSelected()) booksData.ReverseBookOrder();
-				listMod.addAll(booksData.books);
-			}
-		});
 		
 		// on changing Ascending/descending checkbox, reverse the list
 		chckbxAscending.addActionListener(new ActionListener() {
@@ -252,12 +193,99 @@ public class App implements ListSelectionListener {
 		searchResults.setCellRenderer(listRender);
 		// make this class the listener for item selection in the list
 		searchResults.addListSelectionListener(this);
+		sidebar.setLayout(new MigLayout("", "[50.00px][6px][116.00px,grow][6px][56.00px][76.00px]", "[23px][][481px]"));
+		
+		// sorting filter combo box
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setToolTipText("Sort By...");
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
+		comboBox.setSelectedIndex(0);
+		
+		// upon changing combo box sorting options, re-sort the data
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (booksData == null) {
+					Error.createWindow(Error.ERR_NODATA);
+					return;
+				}
+				System.out.println("Sorting method: " + comboBox.getSelectedItem().toString());
+				System.out.println(comboBox.getSelectedItem().toString() == "Author");
+				// clear the list of results, then sort. then add the sorted list to the results.
+				listMod.clear();
+				switch (comboBox.getSelectedItem().toString()) {
+					case "Title": 
+						break;
+					case "Publication Year": 
+						booksData.SortByPublicationYear();
+						break;
+					case "Author": 
+						booksData.SortByAuthor();
+						break;
+					default: 
+						System.out.println("err");
+				}
+				// if descending order, then reverse the book order
+				if (!chckbxAscending.isSelected()) booksData.ReverseBookOrder();
+				listMod.addAll(booksData.books);
+			}
+		});
+		
+		JLabel lblBookID = new JLabel("Book ID:");
+		sidebar.add(lblBookID, "cell 0 0,alignx right");
+		
+		JLabel lblISBN = new JLabel("ISBN:");
+		sidebar.add(lblISBN, "cell 0 1,alignx right");
+		
+		// book ID search field
+		bookIDSearchField = new JTextField();
+		bookIDSearchField.setColumns(10);
+		sidebar.add(bookIDSearchField, "cell 2 0,growx,aligny center");
+		
+		// button for searching by book ID
+		JButton btnIDSearch = new JButton("Search");
+		sidebar.add(btnIDSearch, "cell 4 0,growx,aligny top");
+		btnIDSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (booksData == null) {
+					Error.createWindow(Error.ERR_NODATA);
+					return;
+				}
+				Book book = booksData.SearchByID(bookIDSearchField.getText());
+				if (book == null) {
+					Error.createWindow(Error.ERR_NO_RESULTS);
+					return;
+				}
+				listMod.clear();
+				listMod.addElement(book);
+			}
+		});
+		
+		// field for searching for ISBN
+		isbnSearchField = new JTextField();
+		isbnSearchField.setColumns(10);
+		sidebar.add(isbnSearchField, "cell 2 1,growx");
+		
+		// button for searching by ISBN
+		JButton btnISBNSearch = new JButton("Search");
+		sidebar.add(btnISBNSearch, "cell 4 1,growx");
+		sidebar.add(comboBox, "cell 5 1,alignx left,aligny center");
+		btnISBNSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (booksData == null) {
+					Error.createWindow(Error.ERR_NODATA);
+					return;
+				}
+				//TODO: search by isbn
+			}
+		});
+		
 		// other settings
 		searchResults.setVisibleRowCount(6);
 		searchResults.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		searchResults.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		scrollPane.setViewportView(searchResults);
-		sidebar.setLayout(gl_sidebar);
+		sidebar.add(scrollPane, "cell 0 2 6 1,grow");
+		sidebar.add(chckbxAscending, "cell 5 0,alignx left,aligny top");
 		
 		// center viewport, contains the book information display
 		JDesktopPane desktopPane = new JDesktopPane();

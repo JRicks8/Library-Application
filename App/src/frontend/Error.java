@@ -10,6 +10,7 @@ public class Error {
    protected static final String ERR_MALFORMED_URL = "Error Loading Book Image: Malformed URL Exception";
    protected static final String ERR_IO_EXCEPTION = "Error Loading Book Image: IO Exception";
    protected static final String ERR_URI_SYNTAX_EXCEPTION = "Error Loading Book Image: URI Syntax Exception";
+   protected static final String ERR_NO_RESULTS = "Search yielded no results.";
 
 public static void createWindow(String errorMessage) {
 	   
