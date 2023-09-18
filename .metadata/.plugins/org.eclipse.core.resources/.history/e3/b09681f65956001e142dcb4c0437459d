@@ -131,20 +131,8 @@ public class BookArrayList extends BookList{
 		for(int a=0;a<books.size();a++) {
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<books.size();b++) {
-				float bookAYear = -10000;
-				float bookBYear = -10000;
-				//any publication years that cannot be parsed will keep the value -10000.
-				try {
-					bookAYear = Float.parseFloat(books.get(a).original_publication_year);
-				}
-				catch(Exception E) {
-				}
-				try {
-					bookBYear = Float.parseFloat(books.get(b).original_publication_year);
-				}
-				catch(Exception E) {
-				}
-				
+				float bookAYear = Float.parseFloat(books.get(a).original_publication_year);
+				float bookBYear = Float.parseFloat(books.get(b).original_publication_year);
 				
 				//if book b has an earlier year than book a, swap their positions.
 				if(bookAYear > bookBYear) {
@@ -172,23 +160,11 @@ public class BookArrayList extends BookList{
 		/*binary search requires a sorted list, but it would not be ideal to have to alter the 
 		books list just to find a specific book, so the books list is used to make a temporary sorted list.*/
 		ArrayList<Book> sortedList = NewIDSortedList(books);
-		//rangeStart and rangeEnd keep track of the range of indexes that may contain a match.
-		int rangeStart = 0;
-		int rangeEnd = sortedList.size();
-;		//index is used to keep track of where we are at in the search.
+		//index is used to keep track of where we are at in the search.
 		int index;
 		
-		/*in each iteration, check the index in the middle of the range. If the id at that index
-		matches the id being searched for (_id), return that book and end the search. If the id
-		at that index is not a match, eliminate the side that could not contain the id being searched for.
-		If only one index is left in the range and it is not the correct id, return null.*/
-		while(true) {
-			//if there 
-			return null;
-		}
 		
-		
-		
+		return new Book();
 	}
 	
 	//starts the timer.

@@ -58,28 +58,15 @@ public abstract class BookList{
 		loop through each index in the books list.*/
 		for(int a=0;a<newList.size();a++) {
 			//if the book_id of the current index is cannot be parsed, remove the book and restart the iteration.
-			try{
-				Integer.parseInt(newList.get(a).book_id);
+			try(Integer.parseInt(newList.get(a).book_id)){
+				
 			}
-			catch(Exception E){
+			catch{
 				newList.remove(a);
-				//lower a by one to return to this index for the next iteration
-				a--;
-				continue;
 			}
 			
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<newList.size();b++) {
-				//if the book_id of the current index is cannot be parsed, remove the book and restart the iteration.
-				try{
-					Integer.parseInt(newList.get(b).book_id);
-				}
-				catch(Exception E){
-					newList.remove(b);
-					//lower a by one to return to this index for the next iteration
-					b--;
-					continue;
-				}
 				int bookAID = Integer.parseInt(newList.get(a).book_id);
 				int bookBID = Integer.parseInt(newList.get(b).book_id);
 				

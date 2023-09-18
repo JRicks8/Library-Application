@@ -184,11 +184,11 @@ public class BookArrayList extends BookList{
 		If only one index is left in the range and it is not the correct id, return null.*/
 		while(true) {
 			//if there 
-			return null;
 		}
 		
 		
 		
+		return new Book();
 	}
 	
 	//starts the timer.

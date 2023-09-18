@@ -24,8 +24,7 @@ Books to the "books" list.
 	SortByAuthor(): sorts the "books" list by author from "0" to "a" to "z".
 	
 	SortByPublicationYear(): sorts the "books" list by publication year with earlier dates coming first.
-Dates that cannot be parsed as floats will be given the value -10000(which should make them appear before
-any other dates).
+Dates that cannot be parsed as floats will be given the value -10000.
 	
 	ReverseBookOrder(): reverses the order of the "books" list. 
 	

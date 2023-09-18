@@ -189,6 +189,7 @@ public class BookArrayList extends BookList{
 		
 		
 		
+		return new Book();
 	}
 	
 	//starts the timer.
