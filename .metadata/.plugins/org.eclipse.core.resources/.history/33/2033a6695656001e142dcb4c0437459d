@@ -42,7 +42,7 @@ public abstract class BookList{
 		return splitString;
 	}
 	
-	//returns a new arraylist that is sorted by book_id. Removes any books with null book_ids.
+	//returns a new arraylist that is sorted by book_id. 
 	protected ArrayList<Book> NewIDSortedList(ArrayList<Book> _bookList){
 		//create the new list and add all books from the input list. 
 		ArrayList<Book> newList = new ArrayList<Book>();
@@ -57,13 +57,10 @@ public abstract class BookList{
 		/*a represents the index currently being determined, b represents the index of the book being compared to.
 		loop through each index in the books list.*/
 		for(int a=0;a<newList.size();a++) {
-			//if the book_id of the current index is cannot be parsed, remove the book and restart the iteration.
-			if(newList.get(a).book_id == "")
-			
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<newList.size();b++) {
-				int bookAID = Integer.parseInt(newList.get(a).book_id);
-				int bookBID = Integer.parseInt(newList.get(b).book_id);
+				float bookAID = Float.parseFloat(newList.get(a).book_id);
+				float bookBID = Float.parseFloat(newList.get(b).book_id);
 				
 				//if book b has an lower id than book a, swap their positions.
 				if(bookAID > bookBID) {
@@ -89,10 +86,10 @@ public abstract class BookList{
 	protected abstract void SwapPositions(int _indexA, int _indexB);
 	
 	//sorts books by author starting with special characters, then numbers, then a and ends with z. 
-	protected abstract void SortByAuthor();
+	protected abstract void SortByAuthor(boolean _ascending);
 	
 	//sorts books by publication year, with earlier books coming first.
-	protected abstract void SortByPublicationYear();
+	protected abstract void SortByPublicationYear(boolean _ascending);
 	
 	//reverses the order of books in the list.
 	protected abstract void ReverseBookOrder();

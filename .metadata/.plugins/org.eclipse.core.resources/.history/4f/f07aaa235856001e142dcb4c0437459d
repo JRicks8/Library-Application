@@ -135,7 +135,7 @@ public class BookArrayList extends BookList{
 				float bookBYear = Float.parseFloat(books.get(b).original_publication_year);
 				
 				//if book b has an earlier year than book a, swap their positions.
-				if(bookAYear > bookBYear) {
+				if((bookAYear > bookBYear) {
 					SwapPositions(a,b);
 				}
 			}

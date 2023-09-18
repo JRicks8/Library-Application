@@ -21,14 +21,9 @@ Books to the "books" list.
 	
 	SwapPositions(int _indexA, int _indexB): swaps the list positions of two books based on index.
 	
-	SortByAuthor(boolean _ascending): sorts the "books" list by author from "0" to "a" to "z" if 
-ascending, opposite order if descending. Inputting "true" will return ascending order, inputting 
-"false" will return descending order. 
-
+	SortByAuthor(): sorts the "books" list by author from "0" to "a" to "z".
 	
-	SortByPublicationYear(boolean _ascending): sorts the "books" list by publication year with earlier dates coming first
-when ascending, and later dates coming first for descending. Inputting "true" will return ascending
-order, inputting "false" will return descending order. 
+	SortByPublicationYear(): sorts the "books" list by publication year with earlier dates coming first.
 	
 	ReverseBookOrder(): reverses the order of the "books" list. 
 	

@@ -89,13 +89,14 @@ public class BookArrayList extends BookList{
 		books.set(_indexA, tempBook);
 	}
 	
-	//sorts books by author starting with special characters, then numbers, then 'a' and ends with 'z'. 
-	public void SortByAuthor() {
+	/*sorts books by author starting with special characters, then numbers, then a and ends with z. 
+	descending order is the opposite. */
+	public void SortByAuthor(boolean _ascending) {
 		/*go through each index of the list, and compare the name at that index with all other names.
 		if a more suitable name is found for the position, swap the position of that book and the book currently at the index.*/
 		
-		//a represents the index currently being determined, b represents the index of the book being compared to, c represents the index of the characters being compared.
-		//loop through each index in the books list.
+		/*a represents the index currently being determined, b represents the index of the book being compared to, c represents the index of the characters being compared.
+		loop through each index in the books list.*/
 		for(int a=0;a<books.size();a++) {
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<books.size();b++) {
@@ -105,15 +106,20 @@ public class BookArrayList extends BookList{
 				//for each book that is at a higher index, check if it comes before the current book in order.
 				for(int c=0;c<bookATitle.length() && c<bookBTitle.length();c++) {
 					/*the book with the lowest valued character at the lowest index that does not contain the same
-					character for both strings comes first.*/
+					character for both strings comes first if ascending, and last if descending.*/
 					
-					//if bookA[c] has a lower value than bookB[c], book A comes first and the comparison can stop.
+					//if bookA[c] has a lower value than bookB[c], book A comes first if ascending and the comparison can stop.
 					if(Character.getNumericValue(bookATitle.charAt(c)) < Character.getNumericValue(bookBTitle.charAt(c))) {
+						if(_ascending == false) {
+							SwapPositions(a,b);
+						}
 						break;
 					}
 					//if bookA[c] has a higher value than bookB[c], book B comes first if ascending and the comparison can stop.
 					else if(Character.getNumericValue(bookATitle.charAt(c)) > Character.getNumericValue(bookBTitle.charAt(c))) {
+						if(_ascending == true) {
 							SwapPositions(a,b);
+						}
 						break;
 					}
 				}
@@ -121,8 +127,8 @@ public class BookArrayList extends BookList{
 		}
 	}
 	
-	//sorts books by publication year, with earlier books coming first.
-	public void SortByPublicationYear() {
+	//sorts books by publication year, with earlier books coming first if it is ascending.
+	public void SortByPublicationYear(boolean _ascending) {
 		/*go through each index of the list, and compare the publication year at that index with all other publication years.
 		if an more suitable publication year is found for the position, swap the position of that book and the book currently at the index.*/
 		
@@ -134,8 +140,8 @@ public class BookArrayList extends BookList{
 				float bookAYear = Float.parseFloat(books.get(a).original_publication_year);
 				float bookBYear = Float.parseFloat(books.get(b).original_publication_year);
 				
-				//if book b has an earlier year than book a, swap their positions.
-				if(bookAYear > bookBYear) {
+				//if book b has an earlier(ascending)/later(descending) year than book a, swap their positions.
+				if((bookAYear > bookBYear && _ascending) || (bookAYear < bookBYear && _ascending == false)) {
 					SwapPositions(a,b);
 				}
 			}

@@ -62,8 +62,8 @@ public abstract class BookList{
 			
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<newList.size();b++) {
-				int bookAID = Integer.parseInt(newList.get(a).book_id);
-				int bookBID = Integer.parseInt(newList.get(b).book_id);
+				float bookAID = Float.parseFloat(newList.get(a).book_id);
+				float bookBID = Float.parseFloat(newList.get(b).book_id);
 				
 				//if book b has an lower id than book a, swap their positions.
 				if(bookAID > bookBID) {
@@ -89,10 +89,10 @@ public abstract class BookList{
 	protected abstract void SwapPositions(int _indexA, int _indexB);
 	
 	//sorts books by author starting with special characters, then numbers, then a and ends with z. 
-	protected abstract void SortByAuthor();
+	protected abstract void SortByAuthor(boolean _ascending);
 	
 	//sorts books by publication year, with earlier books coming first.
-	protected abstract void SortByPublicationYear();
+	protected abstract void SortByPublicationYear(boolean _ascending);
 	
 	//reverses the order of books in the list.
 	protected abstract void ReverseBookOrder();
