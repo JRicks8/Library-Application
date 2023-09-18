@@ -44,9 +44,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.border.MatteBorder;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
+
 
 public class App implements ListSelectionListener {
-
+	
 	private JFrame frmLibraryApp;
 	
 	private File booksDataFile;
@@ -101,7 +103,7 @@ public class App implements ListSelectionListener {
 					OnLoadNewFile();
 				} else {
 					// popup error window
-					Error.createWindow("ERR: Selected file is null or cannot be found. Please re-select the file.");
+					Error.createWindow(Error.ERR_NOFILE);
 				}
 			}
 		});
@@ -159,17 +161,23 @@ public class App implements ListSelectionListener {
 		comboBox.setToolTipText("Sort By...");
 		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
 		comboBox.setSelectedIndex(0);
+		
+		// Ascending/Descending checkbox
+		JCheckBox chckbxAscending = new JCheckBox("Ascending");
+		chckbxAscending.setSelected(true);
 		GroupLayout gl_sidebar = new GroupLayout(sidebar);
 		gl_sidebar.setHorizontalGroup(
 			gl_sidebar.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_sidebar.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_sidebar.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(scrollPane, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, gl_sidebar.createSequentialGroup()
+					.addGroup(gl_sidebar.createParallelGroup(Alignment.TRAILING)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+						.addGroup(gl_sidebar.createSequentialGroup()
 							.addComponent(searchField, 147, 147, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxAscending)
 					.addContainerGap())
 		);
 		gl_sidebar.setVerticalGroup(
@@ -178,17 +186,52 @@ public class App implements ListSelectionListener {
 					.addGap(7)
 					.addGroup(gl_sidebar.createParallelGroup(Alignment.BASELINE)
 						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(chckbxAscending))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		
+		// upon changing combo box sorting options, re-sort the data
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (booksData == null) return;
-				System.out.println(comboBox.getSelectedItem());
-				//TODO: add search filters function, probably use a switch + combo box
+				if (booksData == null) {
+					Error.createWindow(Error.ERR_NODATA);
+					return;
+				}
+				System.out.println("Sorting method: " + comboBox.getSelectedItem().toString());
+				System.out.println(comboBox.getSelectedItem().toString() == "Author");
+				// clear the list of results, then sort. then add the sorted list to the results.
+				listMod.clear();
+				switch (comboBox.getSelectedItem().toString()) {
+					case "Title": 
+						break;
+					case "Publication Year": 
+						booksData.SortByPublicationYear();
+						break;
+					case "Author": 
+						booksData.SortByAuthor();
+						break;
+					default: 
+						System.out.println("err");
+				}
+				// if descending order, then reverse the book order
+				if (!chckbxAscending.isSelected()) booksData.ReverseBookOrder();
+				listMod.addAll(booksData.books);
+			}
+		});
+		
+		// on changing Ascending/descending checkbox, reverse the list
+		chckbxAscending.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (booksData == null) {
+					Error.createWindow(Error.ERR_NODATA);
+					return;
+				}
+				listMod.clear();
+				booksData.ReverseBookOrder();
+				listMod.addAll(booksData.books);
 			}
 		});
 		
@@ -330,13 +373,13 @@ public class App implements ListSelectionListener {
 	    			imageUrl = new URI(selectedBook.image_url);
 	    			bookImage = ImageIO.read(imageUrl.toURL());
 	    		} catch (MalformedURLException e1) {
-	    			Error.createWindow("Error Loading Book Image: Malformed URL Exception");
+	    			Error.createWindow(Error.ERR_MALFORMED_URL);
 	    			//e1.printStackTrace();
 	    		} catch (IOException e1) {
-	    			Error.createWindow("Error Loading Book Image: IO Exception");
+	    			Error.createWindow(Error.ERR_IO_EXCEPTION);
 	    			//e1.printStackTrace();
 	    		} catch (URISyntaxException e1) {
-	    			Error.createWindow("Error Loading Book Image: URI Syntax Exception");
+	    			Error.createWindow(Error.ERR_URI_SYNTAX_EXCEPTION);
 	    			//e1.printStackTrace();
 	    		}
 	    		
