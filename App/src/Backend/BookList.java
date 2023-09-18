@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-package Backend;
-
-import java.util.List;
-
-//abstract class used to make BookArrayList and BookLinkedList classes.
-public abstract class BookList{
-	public List<Book> books;
-	
-=======
 package Backend;
 
 import java.util.ArrayList;
@@ -71,5 +61,4 @@ public abstract class BookList{
 	
 	//reverses the order of books in the list.
 	protected abstract void ReverseBookOrder();
->>>>>>> Jackson
 }
