@@ -7,10 +7,13 @@ a decimal point is stored as an integer.
 	BookList: the BookList abstract class contains a list of objects of the Book class ("books" list)
 which is used to store the data pulled from the csv file. It also contains every function that is present 
 in the BookArrayList and BookLinkedList classes, though many of them are abstract and only present 
-to ensure both subclasses have all required functions. BookLinkedList and BookArrayList both inherit from BookList. 
+to ensure both subclasses have all required functions. BookLinkedList and BookArrayList both inherit from BookList.
+ 
 ###Functions###
 
-	All functions are present in both BookArrayList and BookLinkedList with identical results. 
+	All functions are present in both BookArrayList and BookLinkedList with identical results. Some
+functions may not be present in this document as they are only intended for usage within other backend
+functions. 
 	
 	AddBooksFromFile(String _filepath): reads the csv file at the specified path and uses it to add
 Books to the "books" list. 
@@ -23,11 +26,19 @@ Books to the "books" list.
 	
 	SortByAuthor(): sorts the "books" list by author from "0" to "a" to "z".
 	
+	SortByTitle(): sorts the "books" list by title from "0" to "a" to "z".
+	
 	SortByPublicationYear(): sorts the "books" list by publication year with earlier dates coming first.
 Dates that cannot be parsed as floats will be given the value -10000(which should make them appear before
 any other dates).
 	
 	ReverseBookOrder(): reverses the order of the "books" list. 
+	
+	SearchByID(String _id): searchs the books list for a book with the inputted id, returns the book
+object with a matching id or null if none can be found. 
+
+	SearchByISBN(String _isbn): searchs the books list for a book with the inputted isbn, returns the book
+object with a matching isbn or null if none can be found. 
 	
 	StartTime(): keeps track of the point in time the function was called. Calling multiple times will
 overwrite previous calls.
