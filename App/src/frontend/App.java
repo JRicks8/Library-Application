@@ -42,13 +42,15 @@ import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.border.MatteBorder;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
 
 public class App implements ListSelectionListener {
 
 	private JFrame frmLibraryApp;
 	
 	private File booksDataFile;
-	private BookArrayList booksData = new BookArrayList();
+	private BookArrayList booksData;
 	private JTextField searchField;
 	private DefaultListModel<Book> listMod;
 	private JList<Book> searchResults;
@@ -91,7 +93,7 @@ public class App implements ListSelectionListener {
 		btnImportData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (booksDataFile != null && booksDataFile.exists()) {
-					System.out.println("Request Received.");
+					System.out.println("Starting to parse data...");
 					
 					booksData = new BookArrayList();
 					booksData.AddBooksFromFile(booksDataFile.getAbsolutePath());
@@ -104,13 +106,15 @@ public class App implements ListSelectionListener {
 			}
 		});
 		
+		// small text label that shows the selected file to import data from
 		final JLabel lblSelectedFile = new JLabel("File Selected: None");
 		header.add(lblSelectedFile);
 		
-		// file picker browser
+		// button that shows the file browser
 		JButton btnBrowseFiles = new JButton("Browse");
 		btnBrowseFiles.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				// make the file browser after clicking the button
 				JFileChooser fileChooser = new JFileChooser();
 				// make the file filter for CSV files
 				fileChooser.setFileFilter(new FileFilter() {
@@ -129,6 +133,7 @@ public class App implements ListSelectionListener {
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
 				int result = fileChooser.showOpenDialog(header);
 				if (result == JFileChooser.APPROVE_OPTION) {
+					// if a valid file has been selected, update the program
 					booksDataFile = fileChooser.getSelectedFile();
 					lblSelectedFile.setText("File Selected: " + booksDataFile.getName());
 					System.out.println("Selected file: " + booksDataFile.getAbsolutePath());
@@ -138,13 +143,22 @@ public class App implements ListSelectionListener {
 		header.add(btnBrowseFiles);
 		header.add(btnImportData);
 		
+		// left sidebar
 		JPanel sidebar = new JPanel();
 		frmLibraryApp.getContentPane().add(sidebar, BorderLayout.WEST);
 		
+		// search entry field
 		searchField = new JTextField();
 		searchField.setColumns(10);
 		
+		// scrollpane that contains the search results
 		JScrollPane scrollPane = new JScrollPane();
+		
+		// sorting filter combo box
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setToolTipText("Sort By...");
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
+		comboBox.setSelectedIndex(0);
 		GroupLayout gl_sidebar = new GroupLayout(sidebar);
 		gl_sidebar.setHorizontalGroup(
 			gl_sidebar.createParallelGroup(Alignment.LEADING)
@@ -152,18 +166,31 @@ public class App implements ListSelectionListener {
 					.addContainerGap()
 					.addGroup(gl_sidebar.createParallelGroup(Alignment.LEADING, false)
 						.addComponent(scrollPane, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
-						.addComponent(searchField, Alignment.TRAILING, 147, 147, Short.MAX_VALUE))
+						.addGroup(Alignment.TRAILING, gl_sidebar.createSequentialGroup()
+							.addComponent(searchField, 147, 147, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		gl_sidebar.setVerticalGroup(
 			gl_sidebar.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_sidebar.createSequentialGroup()
 					.addGap(7)
-					.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_sidebar.createParallelGroup(Alignment.BASELINE)
+						.addComponent(searchField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
 					.addContainerGap())
 		);
+		
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (booksData == null) return;
+				System.out.println(comboBox.getSelectedItem());
+				//TODO: add search filters function, probably use a switch + combo box
+			}
+		});
 		
 		// make the JList for search results
 		// make the list modifier. This is where we add the elements of the list
@@ -189,21 +216,25 @@ public class App implements ListSelectionListener {
 		scrollPane.setViewportView(searchResults);
 		sidebar.setLayout(gl_sidebar);
 		
+		// center viewport, contains the book information display
 		JDesktopPane desktopPane = new JDesktopPane();
 		desktopPane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		frmLibraryApp.getContentPane().add(desktopPane, BorderLayout.CENTER);
 		desktopPane.setLayout(new BorderLayout(10, 10));
 		
+		// book info title
 		lblBookTitle = new JLabel("");
 		lblBookTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBookTitle.setFont(new Font("Times New Roman", Font.BOLD, 24));
 		desktopPane.add(lblBookTitle, BorderLayout.NORTH);
 		
+		// book info image
 		lblBookImage = new JLabel("");
 		lblBookImage.setIcon(null);
 		lblBookImage.setVerticalAlignment(SwingConstants.TOP);
 		desktopPane.add(lblBookImage, BorderLayout.EAST);
 		
+		// book info table
 		bookInfoTable = new JTable();
 		bookInfoTable.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		bookInfoTable.setEnabled(false);
@@ -242,12 +273,12 @@ public class App implements ListSelectionListener {
 		
 		// final settings
 		frmLibraryApp.setTitle("Library App");
-		frmLibraryApp.setBounds(100, 100, 500, 600);
+		frmLibraryApp.setBounds(100, 100, 800, 600);
 		frmLibraryApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	private void OnLoadNewFile() {
-		listMod.removeAllElements();
+		listMod.clear();
 		listMod.addAll(booksData.books);
 	}
 	
@@ -256,6 +287,7 @@ public class App implements ListSelectionListener {
 	public void valueChanged(ListSelectionEvent e) {
 	    System.out.println("changed selection!");
 	    
+	    if (searchResults.getSelectedValue() == null) return;
 	    Book selectedBook = searchResults.getSelectedValue();
 	    lblBookTitle.setText(selectedBook.title);
 	    bookInfoTable.setModel(new DefaultTableModel(
@@ -281,7 +313,7 @@ public class App implements ListSelectionListener {
 					{"Best Book ID:", selectedBook.best_book_id},
 					{"Work ID:", selectedBook.work_id},
 					{"ISBN:", selectedBook.isbn},
-					{"ISBN-13:", ""},
+					{"ISBN-13:", selectedBook.isbn13},
 				},
 				new String[] {
 					"Column 1", "Column 2"
