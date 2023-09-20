@@ -166,38 +166,41 @@ public abstract class BookList{
 		return Integer.parseInt(newString);
 	}
 	
-	//below are abstract functions that cannot work correctly for both subclasses when inherited but both subclasses should contain them. 
+	//below are abstract functions that cannot work correctly for both subclasses when inherited but both subclasses should contain them.
+	
+	//read from a csv file, and create a book for each line of the file.
+	public abstract void AddBooksFromFile(String _filepath);
 	
 	//print the values of a book.
-	protected abstract void PrintBook(int _index);
+	public abstract void PrintBook(int _index);
 	
 	//calls PrintBook for every book in the books list. 
-	protected abstract void PrintBooks();
+	public abstract void PrintBooks();
 	
 	//swaps the position of two books in the list.
-	protected abstract void SwapPositions(int _indexA, int _indexB);
+	public abstract void SwapPositions(int _indexA, int _indexB);
 	
 	//sorts books by author starting with special characters, then numbers, then a and ends with z. 
-	protected abstract void SortByAuthor();
+	public abstract void SortByAuthor();
 	
 	//sorts books by title starting with special characters, then numbers, then a and ends with z. 
-	protected abstract void SortByTitle();
+	public abstract void SortByTitle();
 	
 	//sorts books by publication year, with earlier books coming first.
-	protected abstract void SortByPublicationYear();
+	public abstract void SortByPublicationYear();
 	
 	//reverses the order of books in the list.
-	protected abstract void ReverseBookOrder();
+	public abstract void ReverseBookOrder();
 	
 	//returns the Book class in the list that matches the id. 
-	protected abstract Book SearchByID(String _id);
+	public abstract Book SearchByID(String _id);
 	
 	//returns the Book class in the list that matches the isbn.
-	protected abstract Book SearchByISBN(String _isbn);
+	public abstract Book SearchByISBN(String _isbn);
 	
 	//start the timer.
-	protected abstract void StartTime();
+	public abstract void StartTime();
 	
 	//return the amount of time that has passed since the time has started in milliseconds(long).
-	protected abstract long GetTime();
+	public abstract long GetTime();
 }

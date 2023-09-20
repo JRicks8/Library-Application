@@ -25,6 +25,8 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 
 import Backend.BookArrayList;
+import Backend.BookLinkedList;
+import Backend.BookList;
 import Backend.Book;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -55,7 +57,7 @@ public class App implements ListSelectionListener {
 	private JFrame frmLibraryApp;
 	
 	private File booksDataFile;
-	private BookArrayList booksData;
+	private BookLinkedList booksData;
 	private JTextField bookIDSearchField;
 	private DefaultListModel<Book> listMod;
 	private JList<Book> searchResults;
@@ -103,7 +105,7 @@ public class App implements ListSelectionListener {
 				if (booksDataFile != null && booksDataFile.exists()) {
 					System.out.println("Starting to parse data...");
 					
-					booksData = new BookArrayList();
+					booksData = new BookLinkedList();
 					booksData.AddBooksFromFile(booksDataFile.getAbsolutePath());
 					System.out.println("Done!");
 					OnLoadNewFile();
