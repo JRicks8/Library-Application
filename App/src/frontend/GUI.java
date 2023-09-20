@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
@@ -32,7 +31,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import Backend.Book;
-import Backend.BookArrayList;
 import net.miginfocom.swing.MigLayout;
 
 public class GUI implements ListSelectionListener {
@@ -49,9 +47,8 @@ public class GUI implements ListSelectionListener {
 	JPanel header;
 	JLabel lblSelectedFile;
 	JCheckBox chckbxAscending;
-	JComboBox<String> comboBox;
-	File booksDataFile;
-	BookArrayList booksData;
+	JComboBox<String> comboSortMethod;
+	JComboBox<String> comboListMethod;
 	JTextField bookIDSearchField;
 	DefaultListModel<Book> listMod;
 	JList<Book> searchResults;
@@ -81,6 +78,12 @@ public class GUI implements ListSelectionListener {
 		btnBrowseFiles.addActionListener(ALBrowseButtonClicked);
 		header.add(btnBrowseFiles);
 		header.add(btnImportData);
+		
+		comboListMethod = new JComboBox<String>();
+		comboListMethod.setToolTipText("Book list stored as...");
+		comboListMethod.setModel(new DefaultComboBoxModel<String>(new String[] {"Array List", "Linked List"}));
+		comboListMethod.setSelectedIndex(0);
+		header.add(comboListMethod);
 		
 		// left sidebar
 		JPanel sidebar = new JPanel();
@@ -117,13 +120,13 @@ public class GUI implements ListSelectionListener {
 		sidebar.setLayout(new MigLayout("", "[50.00px][6px][116.00px,grow][6px][56.00px][76.00px]", "[23px][][481px]"));
 		
 		// sorting filter combo box
-		comboBox = new JComboBox<String>();
-		comboBox.setToolTipText("Sort By...");
-		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
-		comboBox.setSelectedIndex(0);
+		comboSortMethod = new JComboBox<String>();
+		comboSortMethod.setToolTipText("Sort By...");
+		comboSortMethod.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
+		comboSortMethod.setSelectedIndex(0);
 		
 		// upon changing combo box sorting options, re-sort the data
-		comboBox.addActionListener(ALComboBoxSelection);
+		comboSortMethod.addActionListener(ALComboSortSelection);
 		
 		JLabel lblBookID = new JLabel("Book ID:");
 		sidebar.add(lblBookID, "cell 0 0,alignx right");
@@ -149,7 +152,7 @@ public class GUI implements ListSelectionListener {
 		// button for searching by ISBN
 		btnISBNSearch = new JButton("Search");
 		sidebar.add(btnISBNSearch, "cell 4 1,growx");
-		sidebar.add(comboBox, "cell 5 1,alignx left,aligny center");
+		sidebar.add(comboSortMethod, "cell 5 1,alignx left,aligny center");
 		btnISBNSearch.addActionListener(ALSearchISBNButtonClicked);
 		
 		// other settings
@@ -225,14 +228,10 @@ public class GUI implements ListSelectionListener {
 	public ActionListener ALImportButtonClicked;
 	public ActionListener ALBrowseButtonClicked;
 	public ActionListener ALAscendingChckbxClicked;
-	public ActionListener ALComboBoxSelection;
+	public ActionListener ALComboSortSelection;
+	public ActionListener ALComboListMethodSelection;
 	public ActionListener ALSearchIDButtonClicked;
 	public ActionListener ALSearchISBNButtonClicked;
-	
-	void OnLoadNewFile() {
-		listMod.clear();
-		listMod.addAll(booksData.books);
-	}
 	
 	// placeholder override so Eclipse doesn't get mad at me (implemented in App class)
 	@Override

@@ -6,9 +6,9 @@ public class Testing {
 	/*
 	public static void main(String[] args) throws Exception  
 	{  
-		BookArrayList testList = new BookArrayList();
+		BookLinkedList testList = new BookLinkedList();
 		testList.AddBooksFromFile("C:\\books.csv");
-		testList.PrintBook(Integer.parseInt(testList.SearchByISBN("1").book_id));
+		testList.PrintBook(Integer.parseInt(testList.SearchByISBN("316015849").book_id));
 	} 
 	*/
 }

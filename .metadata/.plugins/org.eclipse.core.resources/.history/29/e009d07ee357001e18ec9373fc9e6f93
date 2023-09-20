@@ -229,13 +229,6 @@ public class BookArrayList extends BookList{
 			index = (rangeStart + rangeEnd)/2;
 			currentID = Integer.parseInt(sortedList.get(index).book_id);
 			
-			/*this fixes a rounding issue sometimes encountered when searching for an non-existant
-			id that's bigger than any id in the list. If range is 98-99, index will get stuck at 98
-			due to int rounding, and the loop never ends.*/
-			if(index == rangeStart && currentID < id) {
-				index++;
-			}
-						
 			if(currentID == id) {
 				return sortedList.get(index);
 			}
@@ -246,7 +239,7 @@ public class BookArrayList extends BookList{
 				rangeStart = index;
 			}
 			//if none of the other conditions are met and there are no more indexes to search, return null.
-			if(rangeStart == rangeEnd) {
+			else if(rangeStart == rangeEnd) {
 				return null;
 			}
 		}
@@ -272,21 +265,16 @@ public class BookArrayList extends BookList{
 		catch(Exception E){
 			return null;
 		}
-				
+		
+		
 		/*in each iteration, check the index in the middle of the range. If the isbn at that index
 		matches the isbn being searched for, return that book and end the search. If the isbn
 		at that index is not a match, eliminate the side that could not contain the isbn being searched for.
 		If only one index is left in the range and it is not the correct isbn, return null.*/
 		while(true) {
 			index = (rangeStart + rangeEnd)/2;
+			System.out.println("index: " + index + ", range start:" + rangeStart + ", range end: " + rangeEnd);
 			currentISBN = ParseInt(sortedList.get(index).isbn);
-			
-			/*this fixes a rounding issue sometimes encountered when searching for an non-existant
-			isbn that's bigger than any isbn in the list. If range is 98-99, index will get stuck at 98
-			due to int rounding, and the loop never ends.*/
-			if(index == rangeStart && currentISBN < isbn) {
-				index++;
-			}
 			
 			if(currentISBN == isbn) {
 				return sortedList.get(index);
@@ -298,7 +286,7 @@ public class BookArrayList extends BookList{
 				rangeStart = index;
 			}
 			//if none of the other conditions are met and there are no more indexes to search, return null.
-			if(rangeStart == rangeEnd) {
+			else if(rangeStart == rangeEnd) {
 				return null;
 			}
 		}

@@ -18,10 +18,17 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
 import Backend.Book;
+import Backend.BookList;
 import Backend.BookArrayList;
+import Backend.BookLinkedList;
 
 public class App extends GUI {
-
+	
+	File booksDataFile;
+	BookList bookList;
+	
+	private boolean storedAsArrayList = true;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -53,10 +60,12 @@ public class App extends GUI {
 				if (booksDataFile != null && booksDataFile.exists()) {
 					System.out.println("Starting to parse data...");
 					
-					booksData = new BookArrayList();
-					booksData.AddBooksFromFile(booksDataFile.getAbsolutePath());
+					if (storedAsArrayList) bookList = new BookArrayList();
+					else bookList = new BookLinkedList();
+					bookList.AddBooksFromFile(booksDataFile.getAbsolutePath());
 					System.out.println("Done!");
-					OnLoadNewFile();
+					listMod.clear();
+					listMod.addAll(bookList.books);
 				} else {
 					// popup error window
 					Error.createWindow(Error.ERR_NOFILE);
@@ -97,53 +106,77 @@ public class App extends GUI {
 		
 		ALAscendingChckbxClicked = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (booksData == null) {
+				if (bookList == null) {
 					Error.createWindow(Error.ERR_NODATA);
 					return;
 				}
 				listMod.clear();
-				booksData.ReverseBookOrder();
-				listMod.addAll(booksData.books);
+				bookList.ReverseBookOrder();
+				listMod.addAll(bookList.books);
 			}
 		};
 		chckbxAscending.addActionListener(ALAscendingChckbxClicked);
 		
-		ALComboBoxSelection = new ActionListener() {
+		ALComboSortSelection = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (booksData == null) {
+				if (bookList == null) {
 					Error.createWindow(Error.ERR_NODATA);
 					return;
 				}
-				System.out.println("Sorting method: " + comboBox.getSelectedItem().toString());
-				System.out.println(comboBox.getSelectedItem().toString() == "Author");
+				System.out.println("Sorting method: " + comboSortMethod.getSelectedItem().toString());
+				System.out.println(comboSortMethod.getSelectedItem().toString() == "Author");
 				// clear the list of results, then sort. then add the sorted list to the results.
 				listMod.clear();
-				switch (comboBox.getSelectedItem().toString()) {
+				switch (comboSortMethod.getSelectedItem().toString()) {
 					case "Title": 
+						bookList.SortByTitle();
 						break;
 					case "Publication Year": 
-						booksData.SortByPublicationYear();
+						bookList.SortByPublicationYear();
 						break;
 					case "Author": 
-						booksData.SortByAuthor();
+						bookList.SortByAuthor();
 						break;
-					default: 
-						System.out.println("err");
 				}
 				// if descending order, then reverse the book order
-				if (!chckbxAscending.isSelected()) booksData.ReverseBookOrder();
-				listMod.addAll(booksData.books);
+				if (!chckbxAscending.isSelected()) bookList.ReverseBookOrder();
+				listMod.addAll(bookList.books);
 			}
 		};
-		comboBox.addActionListener(ALComboBoxSelection);
+		comboSortMethod.addActionListener(ALComboSortSelection);
+		
+		ALComboListMethodSelection = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (bookList == null) {
+					Error.createWindow(Error.ERR_NODATA);
+					return;
+				}
+				System.out.println("Data Stored as: " + comboListMethod.getSelectedItem().toString());
+				
+				switch (comboListMethod.getSelectedItem().toString()) {
+					case "Array List" :
+						storedAsArrayList = true;
+						bookList = new BookArrayList();
+						break;
+					case "Linked List" :
+						storedAsArrayList = false;
+						bookList = new BookLinkedList();
+						break;
+				}
+				
+				listMod.clear();
+				Error.createWindow("Please reload the file data to switch data storage method.");
+			}
+		};
+		comboListMethod.addActionListener(ALComboListMethodSelection);
 		
 		ALSearchIDButtonClicked = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (booksData == null) {
+				if (bookList == null) {
 					Error.createWindow(Error.ERR_NODATA);
 					return;
 				}
-				Book book = booksData.SearchByID(bookIDSearchField.getText());
+				Book book = bookList.SearchByID(bookIDSearchField.getText());
 				if (book == null) {
 					Error.createWindow(Error.ERR_NO_RESULTS);
 					return;
@@ -156,11 +189,11 @@ public class App extends GUI {
 		
 		ALSearchISBNButtonClicked = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (booksData == null) {
+				if (bookList == null) {
 					Error.createWindow(Error.ERR_NODATA);
 					return;
 				}
-				Book book = booksData.SearchByISBN(isbnSearchField.getText());
+				Book book = bookList.SearchByISBN(isbnSearchField.getText());
 				System.out.println("done searching");
 				if (book == null) {
 					Error.createWindow(Error.ERR_NO_RESULTS);
