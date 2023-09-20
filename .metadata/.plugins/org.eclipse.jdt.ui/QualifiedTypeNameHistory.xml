@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
+<<<<<<< HEAD
+    <fullyQualifiedTypeName name="java.awt.event.ActionEvent"/>
+    <fullyQualifiedTypeName name="Backend.Book"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="frontend.Error"/>
+    <fullyQualifiedTypeName name="java.awt.Dimension"/>
+=======
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="Backend.BookArrayList"/>
     <fullyQualifiedTypeName name="Backend.BookList"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.util.Collections"/>
     <fullyQualifiedTypeName name="java.util.LinkedList"/>
+>>>>>>> Jackson
 </qualifiedTypeNameHistroy>
