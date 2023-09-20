@@ -6,61 +6,63 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class BookArrayList extends BookList{
-	//the list of books.
-	public ArrayList<Book> books = new ArrayList<Book>();
+	
+	public BookArrayList(){
+		books = new ArrayList<Book>();
+	}
+	
 	//used to keep track of when the timer starts.
 	private long startTime;
 	
 	//read from a csv file, and create a book for each line of the file.
-	public void AddBooksFromFile(String _filepath) {
-		
+	public void AddBooksFromFile(String _filepath) {		
 		String line = "";   
 		try   
 		{  
-		//parsing a CSV file into BufferedReader class constructor  
-		BufferedReader br = new BufferedReader(new FileReader(_filepath)); 
+			//parsing a CSV file into BufferedReader class constructor  
+			BufferedReader br = new BufferedReader(new FileReader(_filepath)); 
+			
+			//skip the first line: the first line should contain only the names of each column rather than usable data.
+			br.readLine();
+			
+			//used to keep track of the index of the Book class being filled out.
+			int i = 0;
 		
-		//skip the first line: the first line should contain only the names of each column rather than usable data.
-		br.readLine();
-		
-		//used to keep track of the index of the Book class being filled out.
-		int i = 0;
-	
-		while ((line = br.readLine()) != null)   //returns a Boolean value  
-		{  
-		ArrayList<String> splitLine = SplitString(line);    // use comma as separator
-		
-		//System.out.println(i); //useful for debugging to see which entry causes an error.
-		
-		books.add(new Book());
-		Book currentBook = books.get(i);
-		currentBook.book_id = splitLine.get(0);
-		currentBook.goodreads_book_id = splitLine.get(1);
-		currentBook.best_book_id = splitLine.get(2);
-		currentBook.work_id = splitLine.get(3);
-		currentBook.books_count = splitLine.get(4);
-		currentBook.isbn = splitLine.get(5); 
-		currentBook.isbn13 = splitLine.get(6);
-		currentBook.authors = splitLine.get(7);
-		currentBook.original_publication_year = splitLine.get(8);
-		currentBook.original_title = splitLine.get(9);
-		currentBook.title = splitLine.get(10);
-		currentBook.language_code = splitLine.get(11);
-		currentBook.average_rating = splitLine.get(12);
-		currentBook.ratings_count = splitLine.get(13);
-		currentBook.work_ratings_count = splitLine.get(14);
-		currentBook.work_text_reviews_count = splitLine.get(15);
-		currentBook.ratings_1 = splitLine.get(16);
-		currentBook.ratings_2 = splitLine.get(17);
-		currentBook.ratings_3 = splitLine.get(18);
-		currentBook.ratings_4 = splitLine.get(19);
-		currentBook.ratings_5 = splitLine.get(20);
-		currentBook.image_url = splitLine.get(21);
-		currentBook.small_image_url = splitLine.get(22);
-		
-		i++;
-		}  				
-		br.close();
+			while ((line = br.readLine()) != null)   //returns a Boolean value  
+			{  
+			ArrayList<String> splitLine = SplitString(line);    // use comma as separator
+			
+			//System.out.println(i); //useful for debugging to see which entry causes an error.
+			
+			books.add(new Book());
+			Book currentBook = books.get(i);
+			currentBook.book_id = splitLine.get(0);
+			currentBook.goodreads_book_id = splitLine.get(1);
+			currentBook.best_book_id = splitLine.get(2);
+			currentBook.work_id = splitLine.get(3);
+			currentBook.books_count = splitLine.get(4);
+			currentBook.isbn = splitLine.get(5); 
+			currentBook.isbn13 = splitLine.get(6);
+			currentBook.authors = splitLine.get(7);
+			currentBook.original_publication_year = splitLine.get(8);
+			currentBook.original_title = splitLine.get(9);
+			currentBook.title = splitLine.get(10);
+			currentBook.language_code = splitLine.get(11);
+			currentBook.average_rating = splitLine.get(12);
+			currentBook.ratings_count = splitLine.get(13);
+			currentBook.work_ratings_count = splitLine.get(14);
+			currentBook.work_text_reviews_count = splitLine.get(15);
+			currentBook.ratings_1 = splitLine.get(16);
+			currentBook.ratings_2 = splitLine.get(17);
+			currentBook.ratings_3 = splitLine.get(18);
+			currentBook.ratings_4 = splitLine.get(19);
+			currentBook.ratings_5 = splitLine.get(20);
+			currentBook.image_url = splitLine.get(21);
+			currentBook.small_image_url = splitLine.get(22);
+						
+			i++;
+			}  				
+			br.close();
 		}   
 		catch (IOException e)   
 		{  
