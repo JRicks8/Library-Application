@@ -43,9 +43,10 @@ public abstract class BookList{
 	}
 	
 	//returns a new arraylist that is sorted by book_id. Removes any books with null book_ids.
-	protected ArrayList<Book> NewIDSortedList(ArrayList<Book> _bookList){
-		//create the new list and add all books from the input list. 
-		ArrayList<Book> newList = new ArrayList<Book>();
+	protected List<Book> NewIDSortedList(List<Book> _bookList){
+		/*create the new list and add all books from the input list. 
+		use ArrayList because List interfaces cannot be instantiated*/
+		List<Book> newList = new ArrayList<Book>();
 		
 		for(Book book : _bookList) {
 			newList.add(book);
@@ -92,12 +93,14 @@ public abstract class BookList{
 			}
 		}
 		
+		
 		return newList;
 	}
 	
 	//returns a new arraylist that is sorted by isbn. Removes any books with null isbns.
-	protected ArrayList<Book> NewISBNSortedList(ArrayList<Book> _bookList){
-		//create the new list and add all books from the input list. 
+	protected List<Book> NewISBNSortedList(List<Book> _bookList){
+		/*create the new list and add all books from the input list. 
+		use ArrayList because List interfaces cannot be instantiated*/ 
 		ArrayList<Book> newList = new ArrayList<Book>();
 		
 		for(Book book : _bookList) {
@@ -189,6 +192,7 @@ public abstract class BookList{
 	//returns the Book class in the list that matches the id. 
 	protected abstract Book SearchByID(String _id);
 	
+	//returns the Book class in the list that matches the isbn.
 	protected abstract Book SearchByISBN(String _isbn);
 	
 	//start the timer.
