@@ -28,6 +28,7 @@ public class App extends GUI {
 	BookList bookList;
 	
 	private boolean storedAsArrayList = true;
+	private boolean measuringPerformance = false;
 	
 	/**
 	 * Launch the application.
@@ -62,7 +63,11 @@ public class App extends GUI {
 					
 					if (storedAsArrayList) bookList = new BookArrayList();
 					else bookList = new BookLinkedList();
+					
+					System.out.println(bookList.books.getClass().getName());
+					long timeStart = System.currentTimeMillis();
 					bookList.AddBooksFromFile(booksDataFile.getAbsolutePath());
+					if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to parse data: " + (System.currentTimeMillis() - timeStart));
 					System.out.println("Done!");
 					listMod.clear();
 					listMod.addAll(bookList.books);
@@ -111,11 +116,20 @@ public class App extends GUI {
 					return;
 				}
 				listMod.clear();
+				long timeStart = System.currentTimeMillis();
 				bookList.ReverseBookOrder();
+				if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to reverse list: " + (System.currentTimeMillis() - timeStart));
 				listMod.addAll(bookList.books);
 			}
 		};
-		chckbxAscending.addActionListener(ALAscendingChckbxClicked);
+		chckbxReverseOrder.addActionListener(ALAscendingChckbxClicked);
+		
+		ALChckbxMeasurePerformance = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				measuringPerformance = chckbxPerformace.isSelected();
+			}
+		};
+		chckbxPerformace.addActionListener(ALChckbxMeasurePerformance);
 		
 		ALComboSortSelection = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -127,19 +141,27 @@ public class App extends GUI {
 				System.out.println(comboSortMethod.getSelectedItem().toString() == "Author");
 				// clear the list of results, then sort. then add the sorted list to the results.
 				listMod.clear();
+				
+				long timeStart;
 				switch (comboSortMethod.getSelectedItem().toString()) {
 					case "Title": 
+						timeStart = System.currentTimeMillis();
 						bookList.SortByTitle();
+						if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to sort by title: " + (System.currentTimeMillis() - timeStart));
 						break;
 					case "Publication Year": 
+						timeStart = System.currentTimeMillis();
 						bookList.SortByPublicationYear();
+						if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to sort by year: " + (System.currentTimeMillis() - timeStart));
 						break;
 					case "Author": 
+						timeStart = System.currentTimeMillis();
 						bookList.SortByAuthor();
+						if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to sort by year: " + (System.currentTimeMillis() - timeStart));
 						break;
 				}
 				// if descending order, then reverse the book order
-				if (!chckbxAscending.isSelected()) bookList.ReverseBookOrder();
+				if (!chckbxReverseOrder.isSelected()) bookList.ReverseBookOrder();
 				listMod.addAll(bookList.books);
 			}
 		};
@@ -176,7 +198,9 @@ public class App extends GUI {
 					Error.createWindow(Error.ERR_NODATA);
 					return;
 				}
+				long timeStart = System.currentTimeMillis();
 				Book book = bookList.SearchByID(bookIDSearchField.getText());
+				if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to search by book ID: " + (System.currentTimeMillis() - timeStart));
 				if (book == null) {
 					Error.createWindow(Error.ERR_NO_RESULTS);
 					return;
@@ -193,7 +217,9 @@ public class App extends GUI {
 					Error.createWindow(Error.ERR_NODATA);
 					return;
 				}
+				long timeStart = System.currentTimeMillis();
 				Book book = bookList.SearchByISBN(isbnSearchField.getText());
+				if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to search by book ISBN: " + (System.currentTimeMillis() - timeStart));
 				System.out.println("done searching");
 				if (book == null) {
 					Error.createWindow(Error.ERR_NO_RESULTS);

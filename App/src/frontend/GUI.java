@@ -46,7 +46,8 @@ public class GUI implements ListSelectionListener {
 	// visual elements
 	JPanel header;
 	JLabel lblSelectedFile;
-	JCheckBox chckbxAscending;
+	JCheckBox chckbxReverseOrder;
+	JCheckBox chckbxPerformace;
 	JComboBox<String> comboSortMethod;
 	JComboBox<String> comboListMethod;
 	JTextField bookIDSearchField;
@@ -56,6 +57,16 @@ public class GUI implements ListSelectionListener {
 	JLabel lblBookTitle;
 	JLabel lblBookImage;
 	JTextField isbnSearchField;
+	
+	// Action listeners for the interface
+	public ActionListener ALImportButtonClicked;
+	public ActionListener ALBrowseButtonClicked;
+	public ActionListener ALAscendingChckbxClicked;
+	public ActionListener ALChckbxMeasurePerformance;
+	public ActionListener ALComboSortSelection;
+	public ActionListener ALComboListMethodSelection;
+	public ActionListener ALSearchIDButtonClicked;
+	public ActionListener ALSearchISBNButtonClicked;
 	
 	public GUI() {
 		frmLibraryApp = new JFrame();
@@ -75,7 +86,6 @@ public class GUI implements ListSelectionListener {
 		
 		// button that shows the file browser
 		btnBrowseFiles = new JButton("Browse");
-		btnBrowseFiles.addActionListener(ALBrowseButtonClicked);
 		header.add(btnBrowseFiles);
 		header.add(btnImportData);
 		
@@ -85,6 +95,9 @@ public class GUI implements ListSelectionListener {
 		comboListMethod.setSelectedIndex(0);
 		header.add(comboListMethod);
 		
+		chckbxPerformace = new JCheckBox("Report Algorithm Performance?");
+		header.add(chckbxPerformace);
+		
 		// left sidebar
 		JPanel sidebar = new JPanel();
 		frmLibraryApp.getContentPane().add(sidebar, BorderLayout.WEST);
@@ -93,12 +106,9 @@ public class GUI implements ListSelectionListener {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setMaximumSize(new Dimension(400, 100000));
 		
-		// Ascending/Descending checkbox
-		chckbxAscending = new JCheckBox("Ascending");
-		chckbxAscending.setSelected(true);
-		
-		// on changing Ascending/descending checkbox, reverse the list
-		chckbxAscending.addActionListener(ALAscendingChckbxClicked);
+		// Reverse order checkbox
+		chckbxReverseOrder = new JCheckBox("Reverse");
+		chckbxReverseOrder.setSelected(true);
 		
 		// make the JList for search results
 		// make the list modifier. This is where we add the elements of the list
@@ -125,9 +135,6 @@ public class GUI implements ListSelectionListener {
 		comboSortMethod.setModel(new DefaultComboBoxModel<String>(new String[] {"Title", "Publication Year", "Author"}));
 		comboSortMethod.setSelectedIndex(0);
 		
-		// upon changing combo box sorting options, re-sort the data
-		comboSortMethod.addActionListener(ALComboSortSelection);
-		
 		JLabel lblBookID = new JLabel("Book ID:");
 		sidebar.add(lblBookID, "cell 0 0,alignx right");
 		
@@ -142,7 +149,6 @@ public class GUI implements ListSelectionListener {
 		// button for searching by book ID
 		btnIDSearch = new JButton("Search");
 		sidebar.add(btnIDSearch, "cell 4 0,growx,aligny top");
-		btnIDSearch.addActionListener(ALSearchIDButtonClicked);
 		
 		// field for searching for ISBN
 		isbnSearchField = new JTextField();
@@ -153,7 +159,6 @@ public class GUI implements ListSelectionListener {
 		btnISBNSearch = new JButton("Search");
 		sidebar.add(btnISBNSearch, "cell 4 1,growx");
 		sidebar.add(comboSortMethod, "cell 5 1,alignx left,aligny center");
-		btnISBNSearch.addActionListener(ALSearchISBNButtonClicked);
 		
 		// other settings
 		searchResults.setVisibleRowCount(6);
@@ -161,7 +166,7 @@ public class GUI implements ListSelectionListener {
 		searchResults.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		scrollPane.setViewportView(searchResults);
 		sidebar.add(scrollPane, "cell 0 2 6 1,grow");
-		sidebar.add(chckbxAscending, "cell 5 0,alignx left,aligny top");
+		sidebar.add(chckbxReverseOrder, "cell 5 0,alignx left,aligny top");
 		
 		// center viewport, contains the book information display
 		JDesktopPane desktopPane = new JDesktopPane();
@@ -223,15 +228,6 @@ public class GUI implements ListSelectionListener {
 		frmLibraryApp.setBounds(100, 100, 800, 600);
 		frmLibraryApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
-	// Action listeners for the interface
-	public ActionListener ALImportButtonClicked;
-	public ActionListener ALBrowseButtonClicked;
-	public ActionListener ALAscendingChckbxClicked;
-	public ActionListener ALComboSortSelection;
-	public ActionListener ALComboListMethodSelection;
-	public ActionListener ALSearchIDButtonClicked;
-	public ActionListener ALSearchISBNButtonClicked;
 	
 	// placeholder override so Eclipse doesn't get mad at me (implemented in App class)
 	@Override
