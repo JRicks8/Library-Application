@@ -237,7 +237,6 @@ public class App extends GUI {
 	// overrides selection function in the JList (book search results selected scroll pane)
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-	    System.out.println("changed selection!");
 	    
 	    if (searchResults.getSelectedValue() == null) return;
 	    Book selectedBook = searchResults.getSelectedValue();
