@@ -64,7 +64,6 @@ public class App extends GUI {
 					if (storedAsArrayList) bookList = new BookArrayList();
 					else bookList = new BookLinkedList();
 					
-					System.out.println(bookList.books.getClass().getName());
 					long timeStart = System.currentTimeMillis();
 					bookList.AddBooksFromFile(booksDataFile.getAbsolutePath());
 					if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to parse data: " + (System.currentTimeMillis() - timeStart));
@@ -138,7 +137,6 @@ public class App extends GUI {
 					return;
 				}
 				System.out.println("Sorting method: " + comboSortMethod.getSelectedItem().toString());
-				System.out.println(comboSortMethod.getSelectedItem().toString() == "Author");
 				// clear the list of results, then sort. then add the sorted list to the results.
 				listMod.clear();
 				
@@ -157,7 +155,7 @@ public class App extends GUI {
 					case "Author": 
 						timeStart = System.currentTimeMillis();
 						bookList.SortByAuthor();
-						if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to sort by year: " + (System.currentTimeMillis() - timeStart));
+						if (measuringPerformance) Error.createWindow("Performance Stats\nTotal time to sort by author: " + (System.currentTimeMillis() - timeStart));
 						break;
 				}
 				// if descending order, then reverse the book order
@@ -178,11 +176,15 @@ public class App extends GUI {
 				switch (comboListMethod.getSelectedItem().toString()) {
 					case "Array List" :
 						storedAsArrayList = true;
-						bookList = new BookArrayList();
+						listMod.clear();
+						bookList.books.clear();
+						bookList = null;
 						break;
 					case "Linked List" :
 						storedAsArrayList = false;
-						bookList = new BookLinkedList();
+						listMod.clear();
+						bookList.books.clear();
+						bookList = null;
 						break;
 				}
 				
