@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class BookLinkedList extends BookList{
-	//the list of books.
-	public LinkedList<Book> books = new LinkedList<Book>();
+	public BookLinkedList(){
+		books = new LinkedList<Book>();
+	}
 	//used to keep track of when the timer starts.
 	private long startTime;
 	
