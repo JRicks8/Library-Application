@@ -239,7 +239,7 @@ public class BookArrayList extends BookList{
 				rangeStart = index;
 			}
 			//if none of the other conditions are met and there are no more indexes to search, return null.
-			if(rangeStart == rangeEnd) {
+			else if(rangeStart == rangeEnd) {
 				return null;
 			}
 		}
@@ -265,13 +265,16 @@ public class BookArrayList extends BookList{
 		catch(Exception E){
 			return null;
 		}
-				
+		
+		int stop = 100;
+		
 		/*in each iteration, check the index in the middle of the range. If the isbn at that index
 		matches the isbn being searched for, return that book and end the search. If the isbn
 		at that index is not a match, eliminate the side that could not contain the isbn being searched for.
 		If only one index is left in the range and it is not the correct isbn, return null.*/
 		while(true) {
 			index = (rangeStart + rangeEnd)/2;
+			System.out.println("index: " + index + ", range start:" + rangeStart + ", range end: " + rangeEnd + " : " + (rangeStart == rangeEnd));
 			currentISBN = ParseInt(sortedList.get(index).isbn);
 			
 			if(currentISBN == isbn) {
@@ -284,9 +287,13 @@ public class BookArrayList extends BookList{
 				rangeStart = index;
 			}
 			//if none of the other conditions are met and there are no more indexes to search, return null.
-			if(rangeStart == rangeEnd) {
+			else if(rangeStart == rangeEnd) {
 				return null;
 			}
+			if(stop == 0) {
+				return null;
+			}
+			stop--;
 		}
 	}
 	
