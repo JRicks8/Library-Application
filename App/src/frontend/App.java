@@ -206,7 +206,7 @@ public class App extends GUI {
 		btnISBNSearch.addActionListener(ALSearchISBNButtonClicked);
 	}
 	
-	// overrides selection function in a JList
+	// overrides selection function in the JList (book search results selected scroll pane)
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 	    System.out.println("changed selection!");
@@ -255,13 +255,10 @@ public class App extends GUI {
 	    			bookImage = ImageIO.read(imageUrl.toURL());
 	    		} catch (MalformedURLException e1) {
 	    			Error.createWindow(Error.ERR_MALFORMED_URL);
-	    			//e1.printStackTrace();
 	    		} catch (IOException e1) {
 	    			Error.createWindow(Error.ERR_IO_EXCEPTION);
-	    			//e1.printStackTrace();
 	    		} catch (URISyntaxException e1) {
 	    			Error.createWindow(Error.ERR_URI_SYNTAX_EXCEPTION);
-	    			//e1.printStackTrace();
 	    		}
 	    		
 	    		if (bookImage != null) lblBookImage.setIcon(new ImageIcon(bookImage));
