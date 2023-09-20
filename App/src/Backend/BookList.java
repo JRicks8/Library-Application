@@ -43,9 +43,10 @@ public abstract class BookList{
 	}
 	
 	//returns a new arraylist that is sorted by book_id. Removes any books with null book_ids.
-	protected ArrayList<Book> NewIDSortedList(ArrayList<Book> _bookList){
-		//create the new list and add all books from the input list. 
-		ArrayList<Book> newList = new ArrayList<Book>();
+	protected List<Book> NewIDSortedList(List<Book> _bookList){
+		/*create the new list and add all books from the input list. 
+		use ArrayList because List interfaces cannot be instantiated*/
+		List<Book> newList = new ArrayList<Book>();
 		
 		for(Book book : _bookList) {
 			newList.add(book);
@@ -58,10 +59,28 @@ public abstract class BookList{
 		loop through each index in the books list.*/
 		for(int a=0;a<newList.size();a++) {
 			//if the book_id of the current index is cannot be parsed, remove the book and restart the iteration.
-			if(newList.get(a).book_id == "")
+			try{
+				Integer.parseInt(newList.get(a).book_id);
+			}
+			catch(Exception E){
+				newList.remove(a);
+				//lower a by one to return to this index for the next iteration
+				a--;
+				continue;
+			}
 			
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<newList.size();b++) {
+				//if the book_id of the current index is cannot be parsed, remove the book and restart the iteration.
+				try{
+					Integer.parseInt(newList.get(b).book_id);
+				}
+				catch(Exception E){
+					newList.remove(b);
+					//lower a by one to return to this index for the next iteration
+					b--;
+					continue;
+				}
 				int bookAID = Integer.parseInt(newList.get(a).book_id);
 				int bookBID = Integer.parseInt(newList.get(b).book_id);
 				
@@ -74,7 +93,77 @@ public abstract class BookList{
 			}
 		}
 		
+		
 		return newList;
+	}
+	
+	//returns a new arraylist that is sorted by isbn. Removes any books with null isbns.
+	protected List<Book> NewISBNSortedList(List<Book> _bookList){
+		/*create the new list and add all books from the input list. 
+		use ArrayList because List interfaces cannot be instantiated*/ 
+		ArrayList<Book> newList = new ArrayList<Book>();
+		
+		for(Book book : _bookList) {
+			newList.add(book);
+		}
+		
+		/*go through each index of the list, and compare the isbn at that index with all other isbns.
+		if an lower isbn is found for the position, swap the position of that book and the book currently at the index.*/
+		
+		/*a represents the index currently being determined, b represents the index of the book being compared to.
+		loop through each index in the books list.*/
+		for(int a=0;a<newList.size();a++) {
+			//if the book_id of the current index is cannot be parsed, remove the book and restart the iteration.
+			try{
+				ParseInt(newList.get(a).isbn);
+			}
+			catch(Exception E){
+				newList.remove(a);
+				//lower a by one to return to this index for the next iteration
+				a--;
+				continue;
+			}
+			
+			//at each index, compare every book that is at a higher index.
+			for(int b=a+1;b<newList.size();b++) {
+				//if the isbn of the current index is cannot be parsed, remove the book and restart the iteration.
+				try{
+					ParseInt(newList.get(b).isbn);
+				}
+				catch(Exception E){
+					newList.remove(b);
+					//lower a by one to return to this index for the next iteration
+					b--;
+					continue;
+				}
+				int bookAISBN = ParseInt(newList.get(a).isbn);
+				int bookBISBN= ParseInt(newList.get(b).isbn);
+				
+				//if book b has an lower id than book a, swap their positions.
+				if(bookAISBN > bookBISBN) {
+					Book tempBook = newList.get(b);
+					newList.set(b, newList.get(a));
+					newList.set(a, tempBook);
+				}
+			}
+		}
+		
+		return newList;
+	}
+
+	
+	//parses a string into an int, removing any non-numerical characters. Must have at lease one number.
+	protected int ParseInt(String _string) {
+		String newString = "";
+		
+		//iterate through each character in _string, add any numbers found to newString.
+		for(int i=0;i<_string.length();i++) {
+			if(Character.isDigit(_string.charAt(i))){
+				newString += _string.charAt(i);
+			}
+		}
+		
+		return Integer.parseInt(newString);
 	}
 	
 	//below are abstract functions that cannot work correctly for both subclasses when inherited but both subclasses should contain them. 
@@ -91,6 +180,9 @@ public abstract class BookList{
 	//sorts books by author starting with special characters, then numbers, then a and ends with z. 
 	protected abstract void SortByAuthor();
 	
+	//sorts books by title starting with special characters, then numbers, then a and ends with z. 
+	protected abstract void SortByTitle();
+	
 	//sorts books by publication year, with earlier books coming first.
 	protected abstract void SortByPublicationYear();
 	
@@ -99,6 +191,9 @@ public abstract class BookList{
 	
 	//returns the Book class in the list that matches the id. 
 	protected abstract Book SearchByID(String _id);
+	
+	//returns the Book class in the list that matches the isbn.
+	protected abstract Book SearchByISBN(String _isbn);
 	
 	//start the timer.
 	protected abstract void StartTime();

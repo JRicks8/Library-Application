@@ -1,0 +1,34 @@
+###Classes###
+
+	Book Class: the Book class contains attributes for every column of the csv file. Anything with text
+is stored as a string, any number with a decimal point is stored as a float, and any number without
+a decimal point is stored as an integer. 
+
+	BookList: the BookList abstract class contains a list of objects of the Book class ("books" list)
+which is used to store the data pulled from the csv file. It also contains every function that is present 
+in the BookArrayList and BookLinkedList classes, though many of them are abstract and only present 
+to ensure both subclasses have all required functions. BookLinkedList and BookArrayList both inherit from BookList. 
+###Functions###
+
+	All functions are present in both BookArrayList and BookLinkedList with identical results. 
+	
+	AddBooksFromFile(String _filepath): reads the csv file at the specified path and uses it to add
+Books to the "books" list. 
+
+	PrintBook(int _index): prints the attributes of the book found at that index in the "books" list.
+	
+	PrintBooks(): calls PrintBook for every book in the list. 
+	
+	SwapPositions(int _indexA, int _indexB): swaps the list positions of two books based on index.
+	
+	SortByAuthor(): sorts the "books" list by author from "0" to "a" to "z".
+	
+	SortByPublicationYear(): sorts the "books" list by publication year with earlier dates coming first.
+	
+	ReverseBookOrder(): reverses the order of the "books" list. 
+	
+	StartTime(): keeps track of the point in time the function was called. Calling multiple times will
+overwrite previous calls.
+
+	GetTime(): returns the amount of time that has passed since StartTime() was last called in milliseconds,
+which are stored as a "long" variable. 

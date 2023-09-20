@@ -99,8 +99,40 @@ public class BookArrayList extends BookList{
 		for(int a=0;a<books.size();a++) {
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<books.size();b++) {
-				String bookATitle = books.get(a).authors;
-				String bookBTitle = books.get(b).authors;
+				String bookAAuthor = books.get(a).authors;
+				String bookBAuthor = books.get(b).authors;
+				
+				//for each book that is at a higher index, check if it comes before the current book in order.
+				for(int c=0;c<bookAAuthor.length() && c<bookBAuthor.length();c++) {
+					/*the book with the lowest valued character at the lowest index that does not contain the same
+					character for both strings comes first.*/
+					
+					//if bookA[c] has a lower value than bookB[c], book A comes first and the comparison can stop.
+					if(Character.getNumericValue(bookAAuthor.charAt(c)) < Character.getNumericValue(bookBAuthor.charAt(c))) {
+						break;
+					}
+					//if bookA[c] has a higher value than bookB[c], book B comes first if ascending and the comparison can stop.
+					else if(Character.getNumericValue(bookAAuthor.charAt(c)) > Character.getNumericValue(bookBAuthor.charAt(c))) {
+							SwapPositions(a,b);
+						break;
+					}
+				}
+			}
+		}
+	}
+	
+	//sorts books by title starting with special characters, then numbers, then 'a' and ends with 'z'. 
+	public void SortByTitle() {
+		/*go through each index of the list, and compare the title at that index with all other titles.
+		if a more suitable title is found for the position, swap the position of that book and the book currently at the index.*/
+		
+		//a represents the index currently being determined, b represents the index of the book being compared to, c represents the index of the characters being compared.
+		//loop through each index in the books list.
+		for(int a=0;a<books.size();a++) {
+			//at each index, compare every book that is at a higher index.
+			for(int b=a+1;b<books.size();b++) {
+				String bookATitle = books.get(a).title;
+				String bookBTitle = books.get(b).title;
 				
 				//for each book that is at a higher index, check if it comes before the current book in order.
 				for(int c=0;c<bookATitle.length() && c<bookBTitle.length();c++) {
@@ -120,7 +152,7 @@ public class BookArrayList extends BookList{
 			}
 		}
 	}
-	
+		
 	//sorts books by publication year, with earlier books coming first.
 	public void SortByPublicationYear() {
 		/*go through each index of the list, and compare the publication year at that index with all other publication years.
@@ -131,8 +163,20 @@ public class BookArrayList extends BookList{
 		for(int a=0;a<books.size();a++) {
 			//at each index, compare every book that is at a higher index.
 			for(int b=a+1;b<books.size();b++) {
-				float bookAYear = Float.parseFloat(books.get(a).original_publication_year);
-				float bookBYear = Float.parseFloat(books.get(b).original_publication_year);
+				float bookAYear = -10000;
+				float bookBYear = -10000;
+				//any publication years that cannot be parsed will keep the value -10000.
+				try {
+					bookAYear = Float.parseFloat(books.get(a).original_publication_year);
+				}
+				catch(Exception E) {
+				}
+				try {
+					bookBYear = Float.parseFloat(books.get(b).original_publication_year);
+				}
+				catch(Exception E) {
+				}
+				
 				
 				//if book b has an earlier year than book a, swap their positions.
 				if(bookAYear > bookBYear) {
@@ -159,12 +203,92 @@ public class BookArrayList extends BookList{
 	public Book SearchByID(String _id) {
 		/*binary search requires a sorted list, but it would not be ideal to have to alter the 
 		books list just to find a specific book, so the books list is used to make a temporary sorted list.*/
-		ArrayList<Book> sortedList = NewIDSortedList(books);
+		ArrayList<Book> sortedList = new ArrayList<Book>(NewIDSortedList(books));
+		//rangeStart and rangeEnd keep track of the range of indexes that may contain a match.
+		int rangeStart = 0;
+		int rangeEnd = sortedList.size();
+;		//index is used to keep track of where we are at in the search.
+		int index;
+		//id of the book found at the index.
+		int currentID;
+		//id of the book being searched for. If cannot be parsed return null.
+		int id;
+		try {
+			id = Integer.parseInt(_id);
+		}
+		catch(Exception E){
+			return null;
+		}
+		
+		
+		/*in each iteration, check the index in the middle of the range. If the id at that index
+		matches the id being searched for, return that book and end the search. If the id
+		at that index is not a match, eliminate the side that could not contain the id being searched for.
+		If only one index is left in the range and it is not the correct id, return null.*/
+		while(true) {
+			index = (rangeStart + rangeEnd)/2;
+			currentID = Integer.parseInt(sortedList.get(index).book_id);
+			
+			if(currentID == id) {
+				return sortedList.get(index);
+			}
+			else if(currentID > id){
+				rangeEnd = index;
+			}
+			else if(currentID < id) {
+				rangeStart = index;
+			}
+			//if none of the other conditions are met and there are no more indexes to search, return null.
+			else if(rangeStart == rangeEnd) {
+				return null;
+			}
+		}
+	}
+	
+	//returns the Book class in the list that matches the id. Uses binary search for ArrayLists.
+	public Book SearchByISBN(String _isbn) {
+		/*binary search requires a sorted list, but it would not be ideal to have to alter the 
+		books list just to find a specific book, so the books list is used to make a temporary sorted list.*/
+		ArrayList<Book> sortedList = new ArrayList<Book>(NewISBNSortedList(books));
+		//rangeStart and rangeEnd keep track of the range of indexes that may contain a match.
+		int rangeStart = 0;
+		int rangeEnd = sortedList.size();
 		//index is used to keep track of where we are at in the search.
 		int index;
+		//isbn of the book found at the index.
+		int currentISBN;
+		//isbn of the book being searched for. If cannot be parsed return null.
+		int isbn;
+		try {
+			isbn = ParseInt(_isbn);
+		}
+		catch(Exception E){
+			return null;
+		}
 		
 		
-		return new Book();
+		/*in each iteration, check the index in the middle of the range. If the isbn at that index
+		matches the isbn being searched for, return that book and end the search. If the isbn
+		at that index is not a match, eliminate the side that could not contain the isbn being searched for.
+		If only one index is left in the range and it is not the correct isbn, return null.*/
+		while(true) {
+			index = (rangeStart + rangeEnd)/2;
+			currentISBN = ParseInt(sortedList.get(index).isbn);
+			
+			if(currentISBN == isbn) {
+				return sortedList.get(index);
+			}
+			else if(currentISBN > isbn){
+				rangeEnd = index;
+			}
+			else if(currentISBN < isbn) {
+				rangeStart = index;
+			}
+			//if none of the other conditions are met and there are no more indexes to search, return null.
+			else if(rangeStart == rangeEnd) {
+				return null;
+			}
+		}
 	}
 	
 	//starts the timer.
