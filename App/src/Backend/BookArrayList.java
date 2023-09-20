@@ -14,12 +14,6 @@ public class BookArrayList extends BookList{
 	//used to keep track of when the timer starts.
 	private long startTime;
 	
-	public BookArrayList() {
-		super();
-		System.out.println("Constructor!");
-		books = new ArrayList<Book>();
-	}
-	
 	//read from a csv file, and create a book for each line of the file.
 	public void AddBooksFromFile(String _filepath) {		
 		String line = "";   
