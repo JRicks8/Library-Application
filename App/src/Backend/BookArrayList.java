@@ -229,6 +229,13 @@ public class BookArrayList extends BookList{
 			index = (rangeStart + rangeEnd)/2;
 			currentID = Integer.parseInt(sortedList.get(index).book_id);
 			
+			/*this fixes a rounding issue sometimes encountered when searching for an non-existant
+			id that's bigger than any id in the list. If range is 98-99, index will get stuck at 98
+			due to int rounding, and the loop never ends.*/
+			if(index == rangeStart && currentID < id) {
+				index++;
+			}
+						
 			if(currentID == id) {
 				return sortedList.get(index);
 			}
@@ -273,6 +280,13 @@ public class BookArrayList extends BookList{
 		while(true) {
 			index = (rangeStart + rangeEnd)/2;
 			currentISBN = ParseInt(sortedList.get(index).isbn);
+			
+			/*this fixes a rounding issue sometimes encountered when searching for an non-existant
+			isbn that's bigger than any isbn in the list. If range is 98-99, index will get stuck at 98
+			due to int rounding, and the loop never ends.*/
+			if(index == rangeStart && currentISBN < isbn) {
+				index++;
+			}
 			
 			if(currentISBN == isbn) {
 				return sortedList.get(index);
